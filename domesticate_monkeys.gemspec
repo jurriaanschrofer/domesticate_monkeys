@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
     "Gemfile.lock"
   ]
 
+  spec.bindir       = 'bin'
   spec.executables << 'domesticate_monkeys'
 
   spec.add_development_dependency "rake"

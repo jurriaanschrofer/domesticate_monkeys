@@ -1,23 +1,38 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
 
-
-puts "see this bin be stubbin'!"
-
-
-# in case we execute via ./bin
-add_load_path = -> do
-  local_lib = File.expand_path('../lib', __dir__)
-  $LOAD_PATH << local_lib unless $LOAD_PATH.include? local_lib
-end
-add_load_path.call
-
+# require context
 require 'optparse'
 require 'domesticate_monkeys'
 
-options = {}
+# set variables
+main_app = DomesticateMonkeys::MainApp
+options  = {}
+
+# parse task options
 OptionParser.new do |parser|
-  parser.on('-v', '--version', 'Show Version') { puts DomesticateMonkeys::VERSION; exit }
+  
+  parser.banner = <<~BANNER
+    
+    domesticate_monkeys shows you all the method redefinitions within your application and its gems.
+    
+    Usage:
+        Domesticate them naughty monkeys!
+
+    Options:
+  BANNER
+
+  parser.on("-app", "show all redefinitions within your application") { options[:view_app] = true }
+  parser.on("-all", "show all redefinitions") { options[:view_all] = true }
+  parser.on("-h", "--help", "show option") { puts parser; exit }
+  parser.on("-v", "--version", "show version") { puts DomesticateMonkeys::VERSION; exit }
 end.parse!
 
-abort "Not arguments supported" unless ARGV.empty?
+# validate task
+abort "Too many arguments" unless ARGV.empty?
+
+# load application
+load main_app
+
+# print results
+view = DomesticateMonkeys::View.new
+view.app          if options[:view_app]
+view.multi_tracks if options[:view_all]

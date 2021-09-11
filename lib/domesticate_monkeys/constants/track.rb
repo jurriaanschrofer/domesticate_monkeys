@@ -32,6 +32,9 @@ module DomesticateMonkeys
 
         track = $DOMESTICATE_MONKEYS_TRACKS[name].dup
         track.add_source(name, source)
+        
+        rescue
+          return
       end
 
       def format_method_name(unbound_method)
