@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+
+puts "see this bin be stubbin'!"
+
+
+# in case we execute via ./bin
+add_load_path = -> do
+  local_lib = File.expand_path('../lib', __dir__)
+  $LOAD_PATH << local_lib unless $LOAD_PATH.include? local_lib
+end
+add_load_path.call
+
+require 'optparse'
+require 'domesticate_monkeys'
+
+options = {}
+OptionParser.new do |parser|
+  parser.on('-v', '--version', 'Show Version') { puts DomesticateMonkeys::VERSION; exit }
+end.parse!
+
+abort "Not arguments supported" unless ARGV.empty?
