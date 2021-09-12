@@ -12,9 +12,7 @@ module DomesticateMonkeys
       tracks = @snapshot.multi_tracks
       tracks = filter_tracks_by_path(tracks, path_filter) if path_filter
 
-      tracks.values.each do |track|
-        view_track(track)
-      end
+      tracks.values.each { |track| track.print }
 
       # Return nil in order to avoid a lengthy print of the @snapshot.
       return nil
@@ -31,17 +29,6 @@ module DomesticateMonkeys
       tracks.select do |_method, track|
         track.sources.any? { |source| source.snakecase.include?(path_filter.snakecase) }
       end
-    end
-
-    def view_track(track)
-      view = <<~EOL
-      
-      #{track.count} definitions for: 
-      #{track.method}
-      #{track.sources.map.with_index { |source, i| "#{i}: #{source}"}.join("\n")}
-      EOL
-
-      puts view
     end
 
   end

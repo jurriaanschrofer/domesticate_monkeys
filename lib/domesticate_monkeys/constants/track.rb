@@ -100,5 +100,16 @@ module DomesticateMonkeys
       $DOMESTICATE_MONKEYS_TRACKS[self.method] = self
     end
 
+    def print
+      view = <<~EOL
+      
+      #{@count} definitions for: 
+      #{@method}
+      #{@sources.map.with_index { |source, i| "#{i}: #{source}"}.join("\n")}
+      EOL
+
+      puts view
+    end
+
   end
 end
