@@ -8,7 +8,7 @@ module DomesticateMonkeys
       @snapshot = snapshot || Snapshot.new
     end
 
-    def multi_tracks(path_filter = nil)
+    def all(path_filter = nil)
       tracks = @snapshot.multi_tracks
       tracks = filter_tracks_by_path(tracks, path_filter) if path_filter
 
@@ -20,9 +20,9 @@ module DomesticateMonkeys
       return nil
     end
 
-    def app_tracks
+    def app
       app_name = Rails.application.class.parent.name.snakecase
-      multi_tracks(app_name)
+      all(app_name)
     end
 
     private
