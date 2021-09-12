@@ -18,9 +18,9 @@ OptionParser.new do |parser|
     Options:
   BANNER
 
-  parser.on("-s [SHOW]", "show view [app, all]") { |view| options[:view] = view }
-  parser.on("-h", "--help", "show option")       { puts parser; exit }
-  parser.on("-v", "--version", "show version")   { puts DomesticateMonkeys::VERSION; exit }
+  parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all]") { |view| options[:view] = view }
+  parser.on("-h", "--help", "show option") { puts parser; exit }
+  parser.on("-v", "--version", "show version") { puts DomesticateMonkeys::VERSION; exit }
 end.parse!
 
 # set default arguments
