@@ -19,20 +19,27 @@ OptionParser.new do |parser|
   BANNER
 
   parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all]") { |view| options[:view] = view }
+  parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
   parser.on("-h", "--help", "show option") { puts parser; exit }
   parser.on("-v", "--version", "show version") { puts DomesticateMonkeys::VERSION; exit }
 end.parse!
 
 # set default arguments
-options[:view] = options[:view] || :app
+view = options[:view].to_sym || :app
+top  = options[:top].to_i    || 3
 
 # validate task
-abort "Aborted: invalid view argument" unless %i( app all ).include?(options[:view]&.to_sym)
+abort "Aborted: invalid view argument" unless %i( app all ).include?(view&.to_sym)
 abort "Aborted: too many arguments"    unless ARGV.empty?
 
 # load application
 load main_app
 
-# print results
-view = DomesticateMonkeys::View.new
-view.send(options[:view])
+# show results
+dm_view = DomesticateMonkeys::View.new
+dm_view.send(view)
+
+# show reports
+dm_report = DomesticateMonkeys::Report.new
+dm_report.boot_information
+dm_report.top_redefinitions(top)

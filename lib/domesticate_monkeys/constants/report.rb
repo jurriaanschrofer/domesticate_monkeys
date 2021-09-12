@@ -13,11 +13,18 @@ module DomesticateMonkeys
       @redefined_method_count = @multi_tracks.size
     end
 
-    def overview
-      puts "During boot we were able to track #{@method_count} methods, of which #{@redefined_method_count} were redefined."
-      puts "You may inspect all redefined methods with View.new.multi_tracks or a filtered variant which only includes"\
-           " methods defined in your application with View.new.app_tracks" 
+    def top_redefinitions(top_amount = 3)
+      puts "Showing top #{top_amount} redefinitions:"
+      tracks = @multi_tracks.first(top_amount).to_h.values
+      tracks.each(&:print)
+      nil
+    end
 
+    def boot_information
+      plain_text   = "It took domesticate_monkeys #{$BOOT_TIME} seconds to analyse your application,"\
+                     " which defined #{$DOMESTICATE_MONKEYS_COUNT} methods."
+      colored_text = "\e[#{35}m#{plain_text}\e[0m"
+      puts colored_text   
     end
 
     def inspect
