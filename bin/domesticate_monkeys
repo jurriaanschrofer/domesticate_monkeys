@@ -4,42 +4,46 @@ require 'optparse'
 require 'domesticate_monkeys'
 require 'pry'
 
-# set variables
-main_app = DomesticateMonkeys::MainApp
-options  = {}
+module DomesticateMonkeys
 
-# parse task options
-OptionParser.new do |parser|
-  
-  parser.banner = <<~BANNER
+  # set variables
+  main_app = MainApp
+  options  = {}
+
+  # parse task options
+  OptionParser.new do |parser|
     
-    domesticate_monkeys shows you all the method redefinitions within your application and its gems.
+    parser.banner = <<~BANNER
+      
+      domesticate_monkeys shows you all the method redefinitions within your application and its gems.
 
-    Options:
-  BANNER
+      Options:
+    BANNER
 
-  parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all]") { |view| options[:view] = view }
-  parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
-  parser.on("-h", "--help", "show option") { puts parser; exit }
-  parser.on("-v", "--version", "show version") { puts DomesticateMonkeys::VERSION; exit }
-end.parse!
+    parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all]") { |view| options[:view] = view }
+    parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
+    parser.on("-h", "--help", "show option") { puts parser; exit }
+    parser.on("-v", "--version", "show version") { puts VERSION; exit }
+  end.parse!
 
-# set default arguments
-view = options[:view].to_sym || :app
-top  = options[:top].to_i    || 3
+  # set default arguments
+  view = options[:view].to_sym || :app
+  top  = options[:top].to_i    || 3
 
-# validate task
-abort "Aborted: invalid view argument" unless %i( app all ).include?(view&.to_sym)
-abort "Aborted: too many arguments"    unless ARGV.empty?
+  # validate task
+  abort "Aborted: invalid view argument" unless %i( app all ).include?(view&.to_sym)
+  abort "Aborted: too many arguments"    unless ARGV.empty?
 
-# load application
-load main_app
+  # load application
+  load main_app
 
-# show results
-dm_view = DomesticateMonkeys::View.new
-dm_view.send(view)
+  # show results
+  dm_view = View.new
+  dm_view.send(view)
 
-# show reports
-dm_report = DomesticateMonkeys::Report.new
-dm_report.boot_information
-dm_report.top_redefinitions(top)
+  # show reports
+  dm_report = Report.new
+  dm_report.boot_information
+  dm_report.top_redefinitions(top)
+
+end
