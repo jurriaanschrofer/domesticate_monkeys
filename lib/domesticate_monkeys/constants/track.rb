@@ -74,9 +74,8 @@ module DomesticateMonkeys
 
     def add_source(method_name, source)
       
-      # Track the amount of methods being defined for development purposes, remove
-      # before launching the gem.
-      # puts $DOMESTICATE_MONKEYS_COUNT += 1
+      $DOMESTICATE_MONKEYS_COUNT += 1
+      printf("\r   Methods defined: #{$DOMESTICATE_MONKEYS_COUNT}\r") if $BOOTING_MAIN_APP
 
       @method ||= method_name
       
