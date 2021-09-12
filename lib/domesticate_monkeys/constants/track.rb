@@ -53,11 +53,13 @@ module DomesticateMonkeys
       def format_instance_method(name)
         name.slice(/(?<=#<UnboundMethod: )[^=]*/)
             .gsub(/\(.*\)/,'')
+            .delete('>')
       end
 
       def format_singleton_method(name)
         name.slice(/(?<=#<Method: )[^=]*/)
             .gsub(/\(.*\)/,'')
+            .delete('>')
       end
 
       def read_method_source(unbound_method)
