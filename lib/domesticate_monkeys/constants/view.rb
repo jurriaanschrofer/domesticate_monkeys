@@ -19,7 +19,12 @@ module DomesticateMonkeys
     end
 
     def app
-      app_name = Rails.application.class.parent.name.snakecase
+      app_class = Rails.application.class
+      
+      # Support both the new Module#module_parent and the deprecated Module#parent methods (Rails 6.1)
+      top_class = app_class.respond_to?(:module_parent) ? app_class.module_parent : app_class.parent
+
+      app_name = top_class.name.snakecase
       all(app_name)
     end
 
