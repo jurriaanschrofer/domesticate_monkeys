@@ -1,13 +1,9 @@
-
-# require context
 require 'optparse'
 require 'domesticate_monkeys'
 require 'pry'
 
 module DomesticateMonkeys
 
-  # set variables
-  main_app = MainApp
   options  = {}
 
   # parse task options
@@ -27,15 +23,15 @@ module DomesticateMonkeys
   end.parse!
 
   # set default arguments
-  view = options[:view].to_sym || :app
-  top  = options[:top].to_i    || 3
+  view = options[:view]&.to_sym || :app
+  top  = options[:top].to_i     || 3
 
   # validate task
   abort "Aborted: invalid view argument" unless %i( app all ).include?(view&.to_sym)
   abort "Aborted: too many arguments"    unless ARGV.empty?
 
   # load application
-  load main_app
+  load MainApp
 
   # show results
   dm_view = View.new
