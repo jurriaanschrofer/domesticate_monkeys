@@ -34,6 +34,10 @@ module DomesticateMonkeys
   # load application
   load MainApp
 
+  # validate that no gems that are known to break domesticate_monkeys are present 
+  # (through overwriting our crucial Kernel .method_added monkey patch)
+  validate
+
   # show results
   dm_view = View.new
   dm_view.send(view)
