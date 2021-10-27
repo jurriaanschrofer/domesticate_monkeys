@@ -16,7 +16,7 @@ module DomesticateMonkeys
       Options:
     BANNER
 
-    parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all]") { |view| options[:view] = view }
+    parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all, overview]") { |view| options[:view] = view }
     parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
     parser.on("-h", "--help", "show option") { puts parser; exit }
     parser.on("-v", "--version", "show version") { puts VERSION; exit }
@@ -27,7 +27,7 @@ module DomesticateMonkeys
   top  = options[:top].to_i     || 3
 
   # validate task
-  abort "Aborted: invalid view argument" unless %i( app all ).include?(view&.to_sym)
+  abort "Aborted: invalid view argument" unless %i( app all overview ).include?(view&.to_sym)
   abort "Aborted: too many arguments"    unless ARGV.empty?
 
   # load application
