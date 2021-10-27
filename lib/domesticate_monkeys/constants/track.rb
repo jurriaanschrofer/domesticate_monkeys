@@ -1,4 +1,4 @@
-
+require "pry"
 module DomesticateMonkeys
   class Track
 
@@ -17,8 +17,8 @@ module DomesticateMonkeys
 
       def add(unbound_method)
         
-        name    = format_method_name(unbound_method)
-        source  = read_method_source(unbound_method)
+        name   = format_method_name(unbound_method)
+        source = read_method_source(unbound_method)
         return unless name && source
 
         # Find the existing track for the given method, or create a new track
@@ -47,17 +47,16 @@ module DomesticateMonkeys
 
         return format_instance_method(name)  if name.include?('UnboundMethod')
         return format_singleton_method(name) if name.include?('Method')
-        return name
       end
 
       def format_instance_method(name)
-        name.slice(/(?<=#<UnboundMethod: )[^=]*/)
+        name.slice(/(?<=#<UnboundMethod: )[^(]*/)
             .gsub(/\(.*\)/,'')
             .delete('>')
       end
 
       def format_singleton_method(name)
-        name.slice(/(?<=#<Method: )[^=]*/)
+        name.slice(/(?<=#<Method: )[^(]*/)
             .gsub(/\(.*\)/,'')
             .delete('>')
       end

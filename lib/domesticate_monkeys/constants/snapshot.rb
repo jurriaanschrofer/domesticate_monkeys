@@ -9,15 +9,20 @@ module DomesticateMonkeys
     # provides insight into the data storage), Report (which provides aggregate information
     # about your application) and TrackExport (which generates a JSON file).
 
-    attr_reader :all_tracks, :multi_tracks
+    attr_reader :all_tracks, :filtered_tracks, :multi_tracks
 
     def initialize
-      @all_tracks    = $DOMESTICATE_MONKEYS_TRACKS
-      @multi_tracks  = select_multi_tracks
+      @all_tracks      = $DOMESTICATE_MONKEYS_TRACKS
+      @filtered_tracks = filter_no_methods
+      @multi_tracks    = select_multi_tracks
+    end
+
+    def filter_no_methods
+      @all_tracks.filter { _1.include?(".") || _1.include?("#") }
     end
 
     def select_multi_tracks
-      multis = $DOMESTICATE_MONKEYS_TRACKS.select { |_method, track| track.count > 1 }
+      multis = @filtered_tracks.select { |_method, track| track.count > 1 }
       sort_tracks(multis)
     end
 
