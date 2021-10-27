@@ -40,7 +40,7 @@ module DomesticateMonkeys
 
     def filter_tracks_by_path(tracks, path_filter)
       tracks.select do |_method, track|
-        track.sources.any? { |source| source.snakecase.include?(path_filter.snakecase) }
+        track.sources.any? { |source| source.snakecase.include?(path_filter.snakecase) && source.exclude?("/vendor/") }
       end
     end
 
