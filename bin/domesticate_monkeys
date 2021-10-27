@@ -1,0 +1,45 @@
+require 'optparse'
+require 'domesticate_monkeys'
+require 'pry'
+
+module DomesticateMonkeys
+
+  options  = {}
+
+  # parse task options
+  OptionParser.new do |parser|
+    
+    parser.banner = <<~BANNER
+      
+      domesticate_monkeys shows you all the method redefinitions within your application and its gems.
+
+      Options:
+    BANNER
+
+    parser.on("-s [SHOW]", "--show [SHOW]", "show view [app, all, overview]") { |view| options[:view] = view }
+    parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
+    parser.on("-h", "--help", "show option") { puts parser; exit }
+    parser.on("-v", "--version", "show version") { puts VERSION; exit }
+  end.parse!
+
+  # set default arguments
+  view = options[:view]&.to_sym || :app
+  top  = options[:top].to_i     || 3
+
+  # validate task
+  abort "Aborted: invalid view argument" unless %i( app all overview ).include?(view&.to_sym)
+  abort "Aborted: too many arguments"    unless ARGV.empty?
+
+  # load application
+  load MainApp
+
+  # show results
+  dm_view = View.new
+  dm_view.send(view)
+
+  # show reports
+  dm_report = Report.new
+  dm_report.boot_information
+  dm_report.top_redefinitions(top)
+
+end
