@@ -19,8 +19,6 @@ module DomesticateMonkeys
 
         name   = format_method_name(unbound_method, method_type)
         source = read_method_source(unbound_method)
-        
-        puts "name=#{name}, source=#{source}" unless name && source
         return unless name && source
 
         # Find the existing track for the given method, or create a new track
