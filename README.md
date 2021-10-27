@@ -1,12 +1,3 @@
-
-
-
 # Domesticate Monkeys
 
-Domesticate Monkeys
-
-
-## Domesticate Monkeys
-
-Domesticate Monkeys
-
+Domesticating monkeys, yay!

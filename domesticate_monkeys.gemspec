@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Jurriaan Schrofer"]
   spec.email       = ["jschrofer@gmail.com"]
   
-  spec.summary     = "" 
+  spec.summary     = "Monkey patches make your application great yet dangerous, therefore you ought to domesticate them!"
   spec.description = spec.summary
 
   spec.homepage                    = "https://github.com/jurriaanschrofer/domesticate_monkeys"
@@ -33,5 +33,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "pry"
+  
 
 end
