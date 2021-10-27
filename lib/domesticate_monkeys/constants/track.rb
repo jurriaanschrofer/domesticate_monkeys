@@ -76,7 +76,10 @@ module DomesticateMonkeys
     def add_source(method_name, source)
       
       $DOMESTICATE_MONKEYS_COUNT += 1
-      printf("\r   Methods defined: #{$DOMESTICATE_MONKEYS_COUNT}\r") if $BOOTING_MAIN_APP
+      
+      if $BOOTING_MAIN_APP && !$SKIP_COUNT_PRINTING
+        printf("\r   Methods defined: #{$DOMESTICATE_MONKEYS_COUNT}\r")
+      end
 
       @method ||= method_name
       

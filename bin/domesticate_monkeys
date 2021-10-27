@@ -20,6 +20,7 @@ module DomesticateMonkeys
     parser.on("-t [COUNT]", "--top [COUNT", "show top x redefinitions") { |top| options[:top] = top }
     parser.on("-h", "--help", "show option") { puts parser; exit }
     parser.on("-v", "--version", "show version") { puts VERSION; exit }
+    parser.on("--skip-count-print") { $SKIP_COUNT_PRINTING = true }
   end.parse!
 
   # set default arguments
