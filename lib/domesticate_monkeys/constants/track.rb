@@ -15,10 +15,12 @@ module DomesticateMonkeys
 
     class << self
 
-      def add(unbound_method)
-        
-        name   = format_method_name(unbound_method)
+      def add(unbound_method, method_type)
+
+        name   = format_method_name(unbound_method, method_type)
         source = read_method_source(unbound_method)
+        
+        puts "name=#{name}, source=#{source}" unless name && source
         return unless name && source
 
         # Find the existing track for the given method, or create a new track
@@ -37,28 +39,22 @@ module DomesticateMonkeys
           return
       end
 
-      def format_method_name(unbound_method)
-        
-        # The formatted method name serves as the uniquely identifying key for
-        # all operations, with a distinguishing '#' for instance methods and a
-        # '.' for singleton methods.
-
+      def format_method_name(unbound_method, method_type)
         name = unbound_method.to_s
 
-        return format_instance_method(name)  if name.include?('UnboundMethod')
-        return format_singleton_method(name) if name.include?('Method')
+        return format_instance_method(name)  if method_type == :instance
+        return format_singleton_method(name) if method_type == :singleton
       end
 
-      def format_instance_method(name)
-        name.slice(/(?<=#<UnboundMethod: )[^(]*/)
-            .gsub(/\(.*\)/,'')
-            .delete('>')
+      def format_instance_method(name)    
+        regex = /.*?<UnboundMethod: ([a-zA-Z:_]{1,}).*(?>([#]))([#.a-zA-Z_?]{1,})/
+        name.scan(regex).flatten.join
       end
 
       def format_singleton_method(name)
-        name.slice(/(?<=#<Method: )[^(]*/)
-            .gsub(/\(.*\)/,'')
-            .delete('>')
+        # regex = /.*?<Method:[^a-zA-Z:]{0,}([a-zA-Z:]{1,})[>]{0,1}([a-zA-Z_.]{1,})/
+        regex = /.*?<Method:[^a-zA-Z:]{0,}([a-zA-Z:]{1,})[^\.]*([.A-Za-z_]{1,})/
+        name.scan(regex).flatten.join
       end
 
       def read_method_source(unbound_method)

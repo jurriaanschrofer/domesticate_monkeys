@@ -1,3 +1,4 @@
+require "pry"
 
 class Module
 
@@ -16,13 +17,13 @@ class Module
   # orignal definition.
 
   def method_added(_method)
-    unbound_method = instance_method(_method)
-    DomesticateMonkeys::Track.add(unbound_method)
+    unbound_method = self.instance_method(_method)
+    DomesticateMonkeys::Track.add(unbound_method, :instance)
   end
 
   def self.singleton_method_added(_method)
-    unbound_method = singleton_method(_method)
-    DomesticateMonkeys::Track.add(unbound_method)
+    unbound_method = self.method(_method)
+    DomesticateMonkeys::Track.add(unbound_method, :singleton)
   end
 
 end
